@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mikhael Loo — AI is People Showing Up to Help</title>
+  <meta name="description" content="A new way to see AI that changes everything. Free resources, masterclasses, and the Human-Centric AI Toolkit from Mikhael Loo, AI Integration Specialist at the University of Tennessee." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { deep: '#0f1c05', dark: '#1a2e0a', mid: '#2d5016', light: '#4a7c2f', bright: '#6ba543' },
+            gold:   { DEFAULT: '#c9974a', light: '#e8b84b', pale: '#f5e6c8', warm: '#f0c860' },
+            earth:  { dark: '#2a1a08', mid: '#5c3d1a', light: '#8b6040', pale: '#c4a882' },
+            cream:  { DEFAULT: '#f5e6c8', soft: '#ede0c4', dim: '#c8b896', muted: '#9a8a70' },
+          },
+          fontFamily: {
+            sans:  ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #1a2e0a; color: #f5e6c8; font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0f1c05; }
+    ::-webkit-scrollbar-thumb { background: #4a7c2f; border-radius: 3px; }
+
+    /* ── Reveals ───────────────────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── Nav ───────────────────────────────────────────────────────────── */
+    nav { transition: background 0.4s ease, backdrop-filter 0.4s ease; }
+    nav.scrolled { background: rgba(15,28,5,0.92) !important; backdrop-filter: blur(12px); box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
+
+    /* ── Hero ──────────────────────────────────────────────────────────── */
+    #hero { background-image: url('assets/alchemy-tent.png'); background-size: cover; background-position: center center; position: relative; }
+    #hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,28,5,0.4) 0%, rgba(15,28,5,0.25) 35%, rgba(15,28,5,0.72) 78%, rgba(26,46,10,1) 100%); pointer-events: none; }
+
+    /* ── Hero text ─────────────────────────────────────────────────────── */
+    .hero-line { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .hero-line.in { opacity: 1; transform: translateY(0); }
+
+    /* ── Glow dividers ─────────────────────────────────────────────────── */
+    .glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(200,151,74,0.5), rgba(107,165,67,0.5), rgba(200,151,74,0.5), transparent); }
+
+    /* ── Cast section ──────────────────────────────────────────────────── */
+    #cast-section { background-image: url('assets/roleplay.png'); background-size: cover; background-position: center top; position: relative; }
+    #cast-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,28,5,0.94) 0%, rgba(15,28,5,0.92) 55%, rgba(26,46,10,0.97) 100%); pointer-events: none; }
+
+    /* ── Character cards ───────────────────────────────────────────────── */
+    .char-card { cursor: pointer; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s ease; border: 1px solid rgba(200,151,74,0.2); background: rgba(15,28,5,0.78); backdrop-filter: blur(6px); position: relative; overflow: hidden; }
+    .char-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at top, rgba(232,184,75,0.1), transparent 60%); opacity: 0; transition: opacity 0.3s ease; }
+    .char-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+    .char-card:hover, .char-card.open { border-color: rgba(200,151,74,0.65); }
+    .char-card.open::before { opacity: 1; }
+    .char-card.open { box-shadow: 0 0 32px rgba(200,151,74,0.2); }
+    .char-voice { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease; opacity: 0; }
+    .char-card.open .char-voice { max-height: 220px; opacity: 1; }
+    .char-emoji { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .char-emoji img { filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5)); transition: filter 0.3s ease; }
+    .char-card:hover .char-emoji { transform: scale(1.06); }
+    .char-card.open .char-emoji { transform: scale(1.12); }
+    .char-card.open .char-emoji img { filter: drop-shadow(0 4px 22px rgba(200,151,74,0.55)); }
+
+    /* ── Voice counter pips ────────────────────────────────────────────── */
+    .counter-pip { width: 8px; height: 8px; border-radius: 50%; background: rgba(200,151,74,0.2); border: 1px solid rgba(200,151,74,0.4); transition: background 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .counter-pip.heard { background: #c9974a; transform: scale(1.2); }
+
+    /* ── Toolkit card ──────────────────────────────────────────────────── */
+    #toolkit-section { background-image: url('assets/inside-tent.png'); background-size: cover; background-position: center; position: relative; }
+    #toolkit-section::before { content: ''; position: absolute; inset: 0; background: rgba(10,20,3,0.80); }
+
+    /* ── Talk realm cards ──────────────────────────────────────────────── */
+    .realm-card { position: relative; overflow: hidden; transition: transform 0.4s ease, box-shadow 0.4s ease; cursor: pointer; }
+    .realm-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,0.6); }
+    .realm-bg { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+    .realm-card:hover .realm-bg { transform: scale(1.04); }
+    .realm-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,20,3,0.95) 0%, rgba(10,20,3,0.68) 50%, rgba(10,20,3,0.28) 100%); }
+    .realm-content { position: relative; z-index: 2; }
+
+    /* ── Resource cards ────────────────────────────────────────────────── */
+    .resource-card { border: 1px solid rgba(200,151,74,0.2); background: rgba(15,28,5,0.7); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+    .resource-card:hover { transform: translateY(-3px); border-color: rgba(200,151,74,0.55); box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+
+    /* ── Photo grid ────────────────────────────────────────────────────── */
+    .photo-frame { overflow: hidden; transition: transform 0.4s ease; }
+    .photo-frame:hover { transform: scale(1.02); }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .photo-frame:hover img { transform: scale(1.06); }
+
+    /* ── Buttons ───────────────────────────────────────────────────────── */
+    .cta-btn { background: linear-gradient(135deg, #c9974a, #e8b84b); color: #0f1c05; font-weight: 700; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease; }
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200,151,74,0.45); }
+    .outline-btn { border: 1px solid rgba(200,151,74,0.6); color: #e8b84b; background: transparent; transition: all 0.3s ease; }
+    .outline-btn:hover { background: rgba(200,151,74,0.12); border-color: #e8b84b; }
+
+    /* ── Mindset selector ──────────────────────────────────────────────── */
+    .mindset-btn { transition: all 0.3s ease; border: 1px solid rgba(200,151,74,0.3); background: rgba(15,28,5,0.6); }
+    .mindset-btn:hover { border-color: rgba(200,151,74,0.7); background: rgba(200,151,74,0.1); }
+    .mindset-btn.selected { border-color: #c9974a; background: rgba(200,151,74,0.18); color: #e8b84b; }
+
+    /* ── Bounce arrow ──────────────────────────────────────────────────── */
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+    .bounce-arrow { animation: bounce 2s ease-in-out infinite; }
+
+    /* ── Modal ─────────────────────────────────────────────────────────── */
+    .modal-inner { border: 1px solid rgba(200,151,74,0.4); box-shadow: 0 32px 80px rgba(0,0,0,0.75); }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════════════════════════ -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-5 py-4 flex items-center justify-between" style="background:transparent;">
+    <div class="font-serif text-sm italic text-gold-pale opacity-90">Mikhael Loo</div>
+    <div class="flex flex-wrap gap-4 text-xs tracking-widest uppercase text-cream-dim">
+      <a href="#cast-section"    class="hover:text-gold transition-colors hidden sm:inline">The Cast</a>
+      <a href="#toolkit-section" class="hover:text-gold transition-colors">Free Toolkit</a>
+      <a href="#talks"           class="hover:text-gold transition-colors">Talks</a>
+      <a href="#newsletter"      class="hover:text-gold transition-colors hidden sm:inline">Newsletter</a>
+      <a href="#about"           class="hover:text-gold transition-colors">About & Contact</a>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="hero" class="relative min-h-screen flex flex-col items-center justify-center text-center px-6">
+    <div class="relative z-10 max-w-3xl mx-auto pt-20">
+
+      <h1 class="hero-line font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-5"
+          style="color:#f5e6c8; text-shadow: 0 4px 24px rgba(0,0,0,0.75);">
+        AI is people<br/>showing up to help.
+      </h1>
+
+      <p class="hero-line font-serif italic text-xl sm:text-2xl text-gold-light mb-8"
+         style="transition-delay:.15s; text-shadow: 0 2px 12px rgba(0,0,0,0.65);">
+        A new way to see it that changes everything.
+      </p>
+
+      <div class="hero-line flex flex-col items-center gap-3 mb-10" style="transition-delay:.3s;">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-gold shadow-xl"
+             style="box-shadow: 0 0 32px rgba(200,151,74,0.4);">
+          <img src="assets/headshot.jpg" alt="Mikhael Loo" class="w-full h-full object-cover" style="object-position: center 38%;" />
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-cream tracking-wide">Mikhael Loo</p>
+          <p class="text-xs text-cream-dim tracking-wider">AI Integration Specialist · University of Tennessee</p>
+        </div>
+      </div>
+
+      <!-- Two entry points -->
+      <div class="hero-line flex flex-col sm:flex-row items-center justify-center gap-4 mb-10" style="transition-delay:.45s;">
+        <a href="#cast-section" class="cta-btn inline-block rounded-full px-7 py-3 text-sm tracking-wide shadow-xl">
+          Meet the cast →
+        </a>
+        <a href="#toolkit-section" class="outline-btn inline-block rounded-full px-7 py-3 text-sm tracking-wide">
+          Grab the free toolkit
+        </a>
+      </div>
+
+      <a href="#cast-section" class="hero-line inline-flex flex-col items-center gap-1 text-xs tracking-widest uppercase text-cream-dim hover:text-gold transition-colors" style="transition-delay:.6s;">
+        <span class="bounce-arrow text-base">↓</span>
+      </a>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-32 pointer-events-none" style="background: linear-gradient(to bottom, transparent, #1a2e0a);"></div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       THE CAST
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="cast-section" class="relative py-20 px-5">
+    <div class="relative z-10 max-w-5xl mx-auto">
+
+      <div class="text-center mb-5 reveal">
+        <p class="text-xs tracking-widest uppercase text-gold mb-3 font-medium">Popular Celebrities of the LLM</p>
+        <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal mb-4">
+          Stop thinking of AI as one smart thing.<br/>
+          <span class="italic text-gold-light">There are multitudes in there.</span>
+        </h2>
+        <p class="text-cream-dim max-w-xl mx-auto text-sm leading-relaxed">
+          Every language model was built from billions of human voices — experts, skeptics, outsiders,
+          people who've been hurt, people full of wonder. You can navigate toward any of them —
+          or even specify your own favorite author of a book you've read.
+          Here's what a few have to say about all of this.
+        </p>
+      </div>
+
+      <!-- Voice counter -->
+      <div class="flex flex-col items-center gap-3 mb-10 reveal reveal-delay-1">
+        <div class="flex gap-2">
+          <div class="counter-pip" data-pip="0"></div>
+          <div class="counter-pip" data-pip="1"></div>
+          <div class="counter-pip" data-pip="2"></div>
+          <div class="counter-pip" data-pip="3"></div>
+          <div class="counter-pip" data-pip="4"></div>
+          <div class="counter-pip" data-pip="5"></div>
+          <div class="counter-pip" data-pip="6"></div>
+          <div class="counter-pip" data-pip="7"></div>
+        </div>
+        <p id="counter-label" class="text-xs text-cream-dim italic">Click a character to hear their voice</p>
+      </div>
+
+      <!-- 8 Character cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+        <div class="char-card rounded-2xl p-4 reveal" data-char="0">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/contrarian.png" alt="The Contrarian" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">The Contrarian</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Goat</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"Let me ask you something. Why would you come to a website to learn about AI? You could just use it. …Unless you're one of those people who actually wants to understand what they're working with. Which, now that I think about it, is the smarter move."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-1" data-char="1">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/skeptic.png" alt="The Skeptic" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">The Skeptic</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Fox</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"I looked at the math. Z equals W times X plus b. That's the whole 'intelligence.' Weighted patterns on a statistical model. I'm not impressed — but I am curious what a person could do if they actually understood that."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-2" data-char="2">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/expert.png" alt="The Expert" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">The Expert</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Owl</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"Every word in these systems came from a human being. Every joke, every theorem, every grief letter written at 2am. That's not artificial. That's humanity's library — made searchable."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-3" data-char="3">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/outsider.png" alt="The Outsider" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">The Outsider</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Badger</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"Nobody asked my community what kind of AI we wanted. But our voices are in the data — our stories, our struggles, our specific ways of seeing. Knowing how to call them forward changes everything about what you can ask for."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal" data-char="4">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/futureself.png" alt="Your Future Self" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">Your Future Self</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Wolf</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"You're going to want to have started this earlier. I'm just here to tell you: earlier is right now. And it's not as hard as you've been told."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-1" data-char="5">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/audience.png" alt="The Audience Member" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">The Audience Member</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Groundhog</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"I showed up just to see what this was about. I left with three things I could actually use before the week was over. That's not a promise — that's just what tends to happen."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-2" data-char="6">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/marginalized.png" alt="Someone Marginalized" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">Someone Marginalized</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Elephant</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"I carry a lot that the 'average' response doesn't see. But there's nothing average about what you can ask for once you know how to navigate it. My voice is in there. I learned how to find it."</p>
+          </div></div>
+        </div>
+
+        <div class="char-card rounded-2xl p-4 reveal reveal-delay-3" data-char="7">
+          <div class="text-center mb-3"><div class="char-emoji mx-auto mb-3" style="width:128px;height:128px;"><img src="assets/chars/hurt.png" alt="Someone Hurt" class="w-full h-full object-contain drop-shadow-lg" /></div>
+            <p class="text-gold font-semibold text-sm">Someone Hurt</p>
+            <p class="text-cream-dim text-xs mt-0.5 italic">Raccoon</p></div>
+          <div class="char-voice"><div class="pt-3 border-t border-gold border-opacity-20">
+            <p class="font-serif italic text-cream text-sm leading-relaxed">"I came in scared. The headlines were bad and I didn't know what was real. What helped was learning that this thing is actually made of people — including people who've been hurt too. That reframe was worth the whole trip."</p>
+          </div></div>
+        </div>
+
+      </div>
+
+      <!-- All-heard reveal -->
+      <div id="all-heard-msg" class="text-center mt-10 opacity-0 transition-all duration-700" style="pointer-events:none; transform: translateY(12px);">
+        <p class="font-serif italic text-gold text-lg">"You're not limited to the perspective of one smart person. You never were."</p>
+        <p class="text-xs text-cream-dim mt-2 tracking-wider uppercase">— Mikhael Loo</p>
+        <a href="#toolkit-section" class="inline-block mt-5 text-sm text-gold hover:underline">Grab the free toolkit ↓</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       WELCOME / PHILOSOPHY NARRATIVE
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="welcome" class="py-20 px-5" style="background: linear-gradient(180deg, #1a2e0a 0%, #162408 100%);">
+    <div class="max-w-3xl mx-auto">
+      <div class="reveal">
+        <p class="text-xs tracking-widest uppercase text-gold mb-4 font-medium">A Different Reality</p>
+        <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal leading-snug mb-8">
+          Welcome. I am so glad<br class="hidden sm:block"/>you stopped by.
+        </h2>
+      </div>
+      <div class="space-y-5 text-cream-dim leading-relaxed text-base reveal reveal-delay-1">
+        <p>
+          Joy is what happens when we meet each other's needs. For decades, millions of humans have left behind
+          a digital inheritance — a statistical record of how we show up to help and communicate with one another.
+          When we look at artificial intelligence through this lens, it ceases to be an alien, intimidating force.
+          Instead, it becomes a platform of collective human behavior that we can stand on to meet the needs of people.
+        </p>
+        <p>
+          In a world dominated by terrifying headlines about "black boxes" and autonomous "super-intelligences,"
+          I choose to see a different reality. My background spans decades as a software analyst and engineer,
+          a transition into the academic world as an AI Integration Specialist at the University of Tennessee,
+          and a parallel life spent immersed in the emotional realism of creative romance writing.
+          All of these worlds collide inside of me, and they have brought me to a singular, grounding realization.
+        </p>
+        <p class="text-cream font-medium">
+          AI is not a thinking machine. It is human-centric, behavioral word-choice data — the largest collection
+          of human expressions, struggles, and wisdom ever assembled in history. A massive digital inheritance,
+          recruited on our behalf.
+        </p>
+        <p>
+          My spiritual practice is rooted in Nonviolent Communication and Legitimacy Gifting. I believe every
+          person carries legitimate needs and feelings. Right now, our world is experiencing an overwhelming wave
+          of fear and exhaustion around technology. People are looking for safety, solid footing, and peace.
+        </p>
+        <p>
+          I don't teach technology to optimize workflows. I teach it to clear the fog of panic so people can
+          reclaim their own humanity. When we let go of the sci-fi metaphors and embrace this technology as a
+          legacy of human help, the anxiety fades. We find our way back to creativity and genuine joy.
+          Because joy is what happens when we help one another — whether through code, music, art, or writing.
+        </p>
+        <p class="font-serif italic text-cream text-lg">
+          I hope this space helps you find that footing.
+        </p>
+      </div>
+
+      <!-- Four Promises -->
+      <div class="glow-line my-12 reveal"></div>
+      <p class="text-xs tracking-widest uppercase text-gold mb-2 font-medium reveal">Stabilizing Foundations</p>
+      <p class="text-cream-dim text-sm mb-6 reveal reveal-delay-1">Hard-fought realizations that made all the difference.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="resource-card rounded-xl p-5 reveal">
+          <div class="text-gold font-serif text-lg mb-2">01</div>
+          <p class="text-cream text-sm leading-relaxed">AI is not sentient. Enough data plus math equals a usable pattern. <span class="text-cream-dim">Enough Data + Math = A Usable Pattern.</span></p>
+        </div>
+        <div class="resource-card rounded-xl p-5 reveal reveal-delay-1">
+          <div class="text-gold font-serif text-lg mb-2">02</div>
+          <p class="text-cream text-sm leading-relaxed">Human-centric data is inherently beautiful.</p>
+        </div>
+        <div class="resource-card rounded-xl p-5 reveal reveal-delay-2">
+          <div class="text-gold font-serif text-lg mb-2">03</div>
+          <p class="text-cream text-sm leading-relaxed font-serif italic">"You are fantastic. Absolutely fantastic."</p>
+          <ul class="mt-2 space-y-1 text-cream-dim text-xs leading-relaxed list-none">
+            <li>✦ You are the source of the data.</li>
+            <li>✦ You are its destination — its beneficiary.</li>
+            <li>✦ Acting like yourself is the same as being the expert at using it to accomplish beautiful goals.</li>
+          </ul>
+        </div>
+        <div class="resource-card rounded-xl p-5 reveal reveal-delay-3">
+          <div class="text-gold font-serif text-lg mb-2">04</div>
+          <p class="text-cream text-sm leading-relaxed">People still need people. AI doesn't change this. People will continue to need people.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       THE TOOLKIT — primary gift CTA
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="toolkit-section" class="relative py-20 px-5">
+    <div class="relative z-10 max-w-2xl mx-auto text-center reveal">
+      <p class="text-xs tracking-widest uppercase text-gold mb-4 font-medium">The human-centric lens changes everything.</p>
+      <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal mb-5 leading-snug">
+        The Human-Centric AI Toolkit.<br/>
+        <span class="italic text-gold-light">A living collection, built to keep growing.</span>
+      </h2>
+      <p class="text-cream-dim text-sm leading-relaxed mb-4 max-w-lg mx-auto">
+        When you stop seeing AI as intelligence and start seeing it as human behavioral data,
+        everything shifts — the ethics, the guardrails, what seems possible, your productivity,
+        how you read the news, how you separate hype from what's actually helpful.
+      </p>
+      <p class="text-cream-dim text-sm leading-relaxed mb-8 max-w-lg mx-auto">
+        These resources exist to help that shift happen.
+        This is a living collection — feel free to come back any time and request the latest version.
+      </p>
+      <a href="https://forms.cloud.microsoft/r/nbAEP9mtF4" target="_blank" rel="noopener"
+         class="cta-btn inline-block rounded-full px-10 py-4 text-base tracking-wide shadow-xl mb-8">
+        Get the Free Toolkit →
+      </a>
+
+      <!-- Value cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+        <div class="resource-card rounded-xl p-5">
+          <div class="text-2xl mb-3">🎥</div>
+          <p class="text-cream text-xs font-semibold mb-2">Video Sessions</p>
+          <p class="text-cream-dim text-xs leading-relaxed">Experiential learning that moves you from fear to agency — from passive consumer to active navigator of the greatest collection of human behaviors the world has ever assembled.</p>
+        </div>
+        <div class="resource-card rounded-xl p-5">
+          <div class="text-2xl mb-3">📰</div>
+          <p class="text-cream text-xs font-semibold mb-2">The April Wren Briefing</p>
+          <p class="text-cream-dim text-xs leading-relaxed">April Wren and Elara bring a weekly human-centered reading of AI headlines — specifically built to cut through the intelligence metaphor and the hype, and find what the news actually means for real people. You can get AI news anywhere. This brings it back to the human.</p>
+        </div>
+        <div class="resource-card rounded-xl p-5">
+          <div class="text-2xl mb-3">📊</div>
+          <p class="text-cream text-xs font-semibold mb-2">AI &amp; the Environment</p>
+          <p class="text-cream-dim text-xs leading-relaxed">A perspective shift on AI's environmental footprint nearly as radical as the human-centric reframe itself. The data that lets you think clearly — so your conclusions are yours, not inherited from someone else's headline.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       TALKS
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="talks" class="py-20 px-5" style="background: linear-gradient(180deg, #162408 0%, #0f1c05 100%);">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <p class="text-xs tracking-widest uppercase text-gold mb-3 font-medium">Three Ways Into This Perspective</p>
+        <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal">Academic. Comprehensive. Psychological.</h2>
+        <p class="text-cream-dim text-sm mt-3 max-w-xl mx-auto leading-relaxed">
+          These are the trainings I created that I thought would be most helpful —
+          each approaching the human-centric view from a different angle,
+          for different audiences and different needs.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="realm-card rounded-2xl h-80 reveal" onclick="openTalkModal(0)">
+          <div class="realm-bg" style="background-image: url('assets/clearing.png');"></div>
+          <div class="realm-overlay"></div>
+          <div class="realm-content absolute bottom-0 left-0 right-0 p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs text-gold tracking-widest uppercase font-medium">Talk 01</span>
+              <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background:rgba(200,151,74,0.15);color:#e8b84b;border:1px solid rgba(200,151,74,0.3);">Academic</span>
+            </div>
+            <h3 class="font-serif text-lg text-cream leading-snug mb-1">Teaching AI with Joy</h3>
+            <p class="text-xs text-cream-dim">The Reframing That Changes Everything</p>
+            <div class="mt-3 text-xs text-gold">Explore →</div>
+          </div>
+        </div>
+        <div class="realm-card rounded-2xl h-80 reveal reveal-delay-1" onclick="openTalkModal(1)">
+          <div class="realm-bg" style="background-image: url('assets/inside-tent.png');"></div>
+          <div class="realm-overlay"></div>
+          <div class="realm-content absolute bottom-0 left-0 right-0 p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs text-gold tracking-widest uppercase font-medium">Talk 02</span>
+              <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background:rgba(200,151,74,0.15);color:#e8b84b;border:1px solid rgba(200,151,74,0.3);">Comprehensive</span>
+            </div>
+            <h3 class="font-serif text-lg text-cream leading-snug mb-1">AI Alchemy</h3>
+            <p class="text-xs text-cream-dim">Beyond Prompting Masterclass</p>
+            <div class="mt-3 text-xs text-gold">Explore →</div>
+          </div>
+        </div>
+        <div class="realm-card rounded-2xl h-80 reveal reveal-delay-2" onclick="openTalkModal(2)">
+          <div class="realm-bg" style="background-image: url('Saving Lives Resources/BirdSavingLivesThumbnail.png');"></div>
+          <div class="realm-overlay"></div>
+          <div class="realm-content absolute bottom-0 left-0 right-0 p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-xs text-gold tracking-widest uppercase font-medium">Talk 03</span>
+              <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background:rgba(200,151,74,0.15);color:#e8b84b;border:1px solid rgba(200,151,74,0.3);">Psychological</span>
+            </div>
+            <h3 class="font-serif text-lg text-cream leading-snug mb-1">Saving Lives with AI Literacy</h3>
+            <p class="text-xs text-cream-dim">How Understanding AI Keeps People Safe, Sane, and Supported</p>
+            <div class="mt-3 text-xs text-gold">Explore →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       LIVE IN THE ROOM
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-16 px-5" style="background: #1a2e0a;">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-8">
+        <p class="text-xs tracking-widest uppercase text-gold mb-2 font-medium">Big Orange STEM Saturday 2026 · University of Tennessee</p>
+        <h2 class="font-serif text-2xl sm:text-3xl text-cream italic">"Live in the room."</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="photo-frame rounded-xl aspect-[4/3] reveal"><img src="assets/speaking-1.jpg" alt="Mikhael speaking, arms raised" /></div>
+        <div class="photo-frame rounded-xl aspect-[4/3] reveal reveal-delay-1"><img src="assets/speaking-2.jpg" alt="Mikhael pointing to Z = Wx + b" /></div>
+        <div class="photo-frame rounded-xl aspect-[4/3] reveal reveal-delay-2"><img src="assets/speaking-3.jpg" alt="Mikhael laughing with students" /></div>
+      </div>
+      <div class="reveal text-center mt-6">
+        <p class="font-serif italic text-gold-light text-base max-w-lg mx-auto">"You are fantastic. Absolutely fantastic."</p>
+        
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       APRIL WREN NEWSLETTER
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="newsletter" class="py-16 px-5" style="background: #0f1c05;">
+    <div class="max-w-4xl mx-auto">
+      <div class="april-card rounded-2xl overflow-hidden reveal">
+        <!-- Full-width image with overlay -->
+        <div class="relative" style="min-height:320px;">
+          <img src="assets/april-wren.png" alt="April Wren — AI Briefing"
+               class="absolute inset-0 w-full h-full object-cover object-top" />
+          <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(10,20,3,0.92) 0%, rgba(10,20,3,0.75) 50%, rgba(10,20,3,0.35) 100%);"></div>
+          <div class="relative z-10 p-7 sm:p-10 max-w-2xl flex flex-col justify-center" style="min-height:320px;">
+            <p class="text-xs tracking-widest uppercase text-gold mb-3 font-medium">Free Weekly Newsletter</p>
+            <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-1 leading-snug">
+              Tired of the AI hype?
+            </h2>
+            <p class="font-serif italic text-gold-light text-lg mb-4">Welcome to the antidote.</p>
+            <p class="text-cream-dim text-sm leading-relaxed mb-4">
+              If you open your feed these days, AI is either promised to save the world or predicted to
+              take your job by next Tuesday. It's exhausting, noisy, and rarely addresses how we actually
+              <em>feel</em> about the changing landscape. The April Wren AI Briefing was built for that gap.
+            </p>
+            <ul class="space-y-2 mb-5">
+              <li class="flex gap-2 text-xs text-cream-dim leading-relaxed">
+                <span class="text-gold mt-0.5 flex-shrink-0">✦</span>
+                <span><strong class="text-cream font-medium">Zero hype.</strong> We look at actual human impact — like why the graduating class of 2026 is pushing back against AI commencement speeches.</span>
+              </li>
+              <li class="flex gap-2 text-xs text-cream-dim leading-relaxed">
+                <span class="text-gold mt-0.5 flex-shrink-0">✦</span>
+                <span><strong class="text-cream font-medium">Curated signals.</strong> What actually shipped, what matters, and what's just PR smoke.</span>
+              </li>
+              <li class="flex gap-2 text-xs text-cream-dim leading-relaxed">
+                <span class="text-gold mt-0.5 flex-shrink-0">✦</span>
+                <span><strong class="text-cream font-medium">A different lens.</strong> AI viewed as human behavioral data — not a sentient force. Every issue links to source materials.</span>
+              </li>
+            </ul>
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="https://forms.cloud.microsoft/pages/responsepage.aspx?id=2RNYUX1x3UWeypqhnAnW-fX7wDHBkcJIrnfQmmy_F9dUOFRGT01CQVFUSE1SNEVYWURTOTlUNlBQNy4u&route=shorturl"
+                 target="_blank" rel="noopener"
+                 class="cta-btn inline-block rounded-full px-6 py-2.5 text-sm tracking-wide shadow-lg">
+                Join the distribution list →
+              </a>
+            </div>
+            <p class="text-xs text-cream-dim italic mt-3">Automated weekly deliveries. Unsubscribe any time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       ABOUT & CONNECT — combined closing
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="about" class="py-20 px-5" style="background-image: url('assets/bridge.png'); background-size: cover; background-position: center; position: relative;">
+  <div style="position:absolute;inset:0;background:rgba(8,16,2,0.90);pointer-events:none;"></div>
+    <div class="max-w-3xl mx-auto relative z-10">
+
+      <!-- Photo + name block -->
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-7 mb-10 reveal">
+        <div class="w-32 h-32 sm:w-44 sm:h-44 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold shadow-2xl"
+             style="box-shadow: 0 0 48px rgba(200,151,74,0.3);">
+          <img src="assets/headshot.jpg" alt="Mikhael Loo" class="w-full h-full object-cover" style="object-position: center 38%;" />
+        </div>
+        <div class="text-center sm:text-left">
+          <p class="text-xs tracking-widest uppercase text-gold mb-2 font-medium">About</p>
+          <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal mb-1">Mikhael Loo</h2>
+          <p class="text-cream-dim text-sm">AI Integration Specialist · Office of Innovative Technologies</p>
+          <p class="text-cream-dim text-sm">University of Tennessee, Knoxville</p>
+        </div>
+      </div>
+
+      <!-- Full bio -->
+      <div class="space-y-4 text-cream-dim text-sm leading-relaxed reveal reveal-delay-1">
+        <p>
+          Mikhael Loo works at the intersection of technology, human experience, and education.
+          As an AI Integration Specialist at the University of Tennessee, he supports staff,
+          educators, and students in using artificial intelligence as an assistive tool for thinking,
+          communication, creativity, and problem-solving — emphasizing human judgment, psychological
+          safety, and responsible use over hype, fear, or over-reliance.
+        </p>
+        <p>
+          His background spans software development, nuclear non-proliferation at Oak Ridge National
+          Laboratory, and education — a cross-disciplinary range that shapes how he approaches AI
+          literacy. As a neurodivergent thinker, he uses AI daily to support clarity, focus, and
+          exploration, both for himself and for the communities he serves. He has used it to publish
+          a book, complete a novel, launch an online store, create an audiobook, and secure a new
+          teaching role — all demonstrations that AI, used with intention, expands rather than
+          replaces human capability.
+        </p>
+        <p>
+          A lot of people jump straight into building with AI without ever addressing the alien
+          intelligence in the room — and it cripples their journey. Mikhael's work is about laying
+          a firm foundation: the hard-fought realization that AI is not intelligence. It is data
+          shaped by human voices — the largest collection of human behavioral patterns ever assembled.
+          When people engage from that foundation, the hype dissolves, the fear fades, and something
+          more useful takes their place: confidence, discernment, and the freedom to ask better questions.
+        </p>
+        <p>
+          He regularly leads workshops across campus and beyond, helping participants move past
+          surface-level prompting to develop genuine fluency — not technical expertise, but the kind
+          of human fluency that comes from understanding what you are actually working with.
+        </p>
+        <p class="font-serif italic text-cream">
+          I hope even just visiting this space helps you connect with the valuable human
+          experiences woven into our world.
+        </p>
+      </div>
+
+      <!-- Divider -->
+      <div class="glow-line my-10 reveal"></div>
+
+      <!-- Conversation invitation -->
+      <div class="text-center reveal">
+        <p class="text-cream-dim text-sm leading-relaxed mb-7 max-w-lg mx-auto">
+          If something here moved you — or you want to share a story about how you were helped
+          in an incredible way because of this technology — or if you have questions or concerns —
+          feel free to write about anything AI.
+        </p>
+        <a href="mailto:mloo@utk.edu?subject=Starting%20a%20Conversation"
+           class="cta-btn inline-block rounded-full px-9 py-3.5 text-sm tracking-wide shadow-xl mb-8">
+          Start a Conversation
+        </a>
+        <div class="text-xs text-cream-dim space-y-1">
+          <p><a href="mailto:mloo@utk.edu" class="text-gold hover:underline">mloo@utk.edu</a></p>
+          <p class="mt-4 font-serif italic text-gold-light text-sm">"The data is people. And people are worth the time."</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       TALK MODAL
+  ═══════════════════════════════════════════════════════════ -->
+  <div id="talk-modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 sm:p-8"
+       style="display:none; background: rgba(10,20,3,0.92); backdrop-filter: blur(16px);"
+       onclick="closeTalkModal(event)">
+    <div class="modal-inner bg-forest-dark rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative"
+         style="background:#1a2e0a;">
+      <button onclick="document.getElementById('talk-modal').style.display='none'; document.body.style.overflow='';"
+              class="absolute top-4 right-4 text-cream-dim hover:text-gold transition-colors text-xl leading-none">✕</button>
+      <p id="modal-number" class="text-xs tracking-widest uppercase text-gold mb-3 font-medium"></p>
+      <h3 id="modal-title" class="font-serif text-2xl text-cream mb-4 leading-snug"></h3>
+      <p id="modal-body" class="text-cream-dim text-sm leading-relaxed mb-5"></p>
+      <div id="modal-links" class="flex flex-wrap gap-3 mb-5"></div>
+      <div class="pt-5 border-t border-gold border-opacity-20">
+        <a href="#connect" onclick="document.getElementById('talk-modal').style.display='none'; document.body.style.overflow='';"
+           class="cta-btn inline-block rounded-full px-6 py-2.5 text-sm tracking-wide">
+          Start a conversation about this talk
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+  (() => {
+
+    // ── Nav scroll ────────────────────────────────────────────────────
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+    // ── Hero entrance ─────────────────────────────────────────────────
+    document.querySelectorAll('.hero-line').forEach((el, i) => {
+      setTimeout(() => el.classList.add('in'), 300 + i * 180);
+    });
+
+    // ── Scroll reveal ─────────────────────────────────────────────────
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ── Character cards ───────────────────────────────────────────────
+    let heardSet = new Set();
+    const cards  = document.querySelectorAll('.char-card');
+    const pips   = document.querySelectorAll('.counter-pip');
+    const label  = document.getElementById('counter-label');
+    const allMsg = document.getElementById('all-heard-msg');
+
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        const wasOpen = card.classList.contains('open');
+        cards.forEach(c => c.classList.remove('open'));
+        if (!wasOpen) {
+          card.classList.add('open');
+          heardSet.add(idx);
+          const n = heardSet.size;
+          pips.forEach((p, i) => p.classList.toggle('heard', i < n));
+          if (n < 8) {
+            label.textContent = `${n} of 8 voices heard`;
+          } else {
+            label.textContent = 'All 8 voices heard ✦';
+            label.style.color = '#e8b84b';
+            allMsg.style.opacity = '1';
+            allMsg.style.transform = 'translateY(0)';
+            allMsg.style.pointerEvents = 'auto';
+          }
+        }
+      });
+    });
+
+    // ── Talk modal ────────────────────────────────────────────────────
+    const talks = [
+      {
+        number: 'Talk 01',
+        title:  'Teaching AI with Joy: The Reframing That Changes Everything',
+        body:   'Fear paralyzes learning. This session is an experiential reframe — we pull back the curtain on Large Language Models to see them not as cheating engines or autonomous brains, but as a vast mirror of human behavior. We transform classrooms and workspaces into live, collaborative environments where AI literacy becomes a gateway to deeper human connection and genuine joy.\n\nThe linked session below is the academic prequel — "Academic Understandings of AI: Two Lenses." It explores how mathematical disciplines (arithmetic through probability and statistics) detect patterns in messy datasets, and how information literacy helps us evaluate AI\'s word choices and maintain transparency and accountability. It\'s the foundation this reframe is built on.',
+        links:  [
+          { label: 'Watch the prequel: Academic Understandings of AI — Two Lenses (Panopto)', href: 'https://utk.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=9f80e370-087b-4b9a-93a2-b37d0141d87a' }
+        ],
+      },
+      {
+        number: 'Talk 02',
+        title:  'AI Alchemy: Beyond Prompting Masterclass',
+        body:   'A half-day workshop (four hours) that moves from addressing every AI fear we carry today to the full basics of using AI effectively — once you understand it as human behavioral data.\n\nThe session reframes AI as a usable pattern in data — a collection of human behaviors and shared words — rather than a foreign intelligence. From there, participants build on four pillars: connecting technology to goals that matter; self-advocacy and steering the model when popular responses fall short; authentic interaction that elicits the most helpful responses; and lateral thinking that navigates toward alternative, conflicting, or niche data points.\n\nParticipants leave having built a custom assistant, practiced multi-perspective reasoning with an AI Dream Team, and mastered the campfire backstory technique. Bring your natural voice and your messiest creativity.',
+        links:  [
+          { label: 'Watch the full masterclass on YouTube', href: 'https://youtu.be/Tw9TRwz5i-Y' }
+        ],
+      },
+      {
+        number: 'Talk 03',
+        title:  'Saving Lives with AI Literacy: How Understanding AI Keeps People Safe, Sane, and Supported',
+        body:   'Millions of people are using AI as an emotional sounding board in moments of profound isolation and fear. In this raw session we demystify the black box and activate three human anchors you already possess — your Inner Rebel, your Crowd Follower, and your Fierce Ally. A fierce defense of the self, built for anyone navigating the exhausting space of caring for others in a digital age.',
+        links:  [
+          { label: 'Watch on YouTube', href: 'https://youtu.be/4i3WGr5ajEE' },
+          { label: 'Immersive Edition on Panopto', href: 'https://utk.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2eb35574-9c33-46bf-8fa7-b3f4010d8c39' },
+        ],
+      },
+    ];
+
+    window.openTalkModal = function(idx) {
+      const t = talks[idx];
+      document.getElementById('modal-number').textContent = t.number;
+      document.getElementById('modal-title').textContent  = t.title;
+      const bodyEl = document.getElementById('modal-body');
+      bodyEl.innerHTML = '';
+      t.body.split('\n\n').forEach(para => {
+        const p = document.createElement('p');
+        p.className = 'text-cream-dim text-sm leading-relaxed mb-3';
+        p.textContent = para;
+        bodyEl.appendChild(p);
+      });
+      const linksDiv = document.getElementById('modal-links');
+      linksDiv.innerHTML = t.links.map(l =>
+        `<a href="${l.href}" target="_blank" rel="noopener"
+            class="inline-flex items-center gap-1 text-xs text-gold hover:underline font-medium">
+          ${l.label} <span>→</span>
+        </a>`
+      ).join('');
+      const modal = document.getElementById('talk-modal');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeTalkModal = function(e) {
+      if (e && e.target !== document.getElementById('talk-modal')) return;
+      document.getElementById('talk-modal').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { document.getElementById('talk-modal').style.display = 'none'; document.body.style.overflow = ''; }
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
