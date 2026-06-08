@@ -51,7 +51,7 @@
     nav.scrolled { background: rgba(15,28,5,0.92) !important; backdrop-filter: blur(12px); box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
 
     /* ── Hero ──────────────────────────────────────────────────────────── */
-    #hero { background-image: url('assets/alchemy-tent.png'); background-size: cover; background-position: center center; position: relative; }
+    #hero { background-image: url('AI Alchemy Resources/AlchemyTent.png'); background-size: cover; background-position: center center; position: relative; }
     #hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,28,5,0.4) 0%, rgba(15,28,5,0.25) 35%, rgba(15,28,5,0.72) 78%, rgba(26,46,10,1) 100%); pointer-events: none; }
 
     /* ── Hero text ─────────────────────────────────────────────────────── */
@@ -62,7 +62,7 @@
     .glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(200,151,74,0.5), rgba(107,165,67,0.5), rgba(200,151,74,0.5), transparent); }
 
     /* ── Cast section ──────────────────────────────────────────────────── */
-    #cast-section { background-image: url('assets/roleplay.png'); background-size: cover; background-position: center top; position: relative; }
+    #cast-section { background-image: url('AI Alchemy Slide Pics/AI Alchemy2-RolePlay.png'); background-size: cover; background-position: center top; position: relative; }
     #cast-section::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,28,5,0.94) 0%, rgba(15,28,5,0.92) 55%, rgba(26,46,10,0.97) 100%); pointer-events: none; }
 
     /* ── Character cards ───────────────────────────────────────────────── */
@@ -73,7 +73,7 @@
     .char-card.open::before { opacity: 1; }
     .char-card.open { box-shadow: 0 0 32px rgba(200,151,74,0.2); }
     .char-voice { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease; opacity: 0; }
-    .char-card.open .char-voice { max-height: 220px; opacity: 1; }
+    .char-card.open .char-voice { max-height: 320px; opacity: 1; }
     .char-emoji { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
     .char-emoji img { filter: drop-shadow(0 2px 10px rgba(0,0,0,0.5)); transition: filter 0.3s ease; }
     .char-card:hover .char-emoji { transform: scale(1.06); }
@@ -85,7 +85,7 @@
     .counter-pip.heard { background: #c9974a; transform: scale(1.2); }
 
     /* ── Toolkit card ──────────────────────────────────────────────────── */
-    #toolkit-section { background-image: url('assets/inside-tent.png'); background-size: cover; background-position: center; position: relative; }
+    #toolkit-section { background-image: url('AI Alchemy Resources/InsideTent2.png'); background-size: cover; background-position: center; position: relative; }
     #toolkit-section::before { content: ''; position: absolute; inset: 0; background: rgba(10,20,3,0.80); }
 
     /* ── Talk realm cards ──────────────────────────────────────────────── */
@@ -318,7 +318,7 @@
       <div class="reveal">
         <p class="text-xs tracking-widest uppercase text-gold mb-4 font-medium">A Different Reality</p>
         <h2 class="font-serif text-3xl sm:text-4xl text-cream font-normal leading-snug mb-8">
-          Welcome. I am so glad<br class="hidden sm:block"/>you stopped by.
+          Welcome. I am so glad <br class="hidden sm:block"/>you stopped by.
         </h2>
       </div>
       <div class="space-y-5 text-cream-dim leading-relaxed text-base reveal reveal-delay-1">
@@ -349,7 +349,7 @@
           I don't teach technology to optimize workflows. I teach it to clear the fog of panic so people can
           reclaim their own humanity. When we let go of the sci-fi metaphors and embrace this technology as a
           legacy of human help, the anxiety fades. We find our way back to creativity and genuine joy.
-          Because joy is what happens when we help one another — whether through code, music, art, or writing.
+          Because joy is what happens when we help each other — whether through code, music, art, or writing.
         </p>
         <p class="font-serif italic text-cream text-lg">
           I hope this space helps you find that footing.
@@ -450,7 +450,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div class="realm-card rounded-2xl h-80 reveal" onclick="openTalkModal(0)">
-          <div class="realm-bg" style="background-image: url('assets/clearing.png');"></div>
+          <div class="realm-bg" style="background-image: url('AI Alchemy Resources/ClearingBlank.png');"></div>
           <div class="realm-overlay"></div>
           <div class="realm-content absolute bottom-0 left-0 right-0 p-5">
             <div class="flex items-center gap-2 mb-2">
@@ -463,7 +463,7 @@
           </div>
         </div>
         <div class="realm-card rounded-2xl h-80 reveal reveal-delay-1" onclick="openTalkModal(1)">
-          <div class="realm-bg" style="background-image: url('assets/inside-tent.png');"></div>
+          <div class="realm-bg" style="background-image: url('AI Alchemy Resources/InsideTent2.png');"></div>
           <div class="realm-overlay"></div>
           <div class="realm-content absolute bottom-0 left-0 right-0 p-5">
             <div class="flex items-center gap-2 mb-2">
@@ -570,7 +570,7 @@
   <!-- ══════════════════════════════════════════════════════════
        ABOUT & CONNECT — combined closing
   ═══════════════════════════════════════════════════════════ -->
-  <section id="about" class="py-20 px-5" style="background-image: url('assets/bridge.png'); background-size: cover; background-position: center; position: relative;">
+  <section id="about" class="py-20 px-5" style="background-image: url('AI Alchemy Resources/Bridge.png'); background-size: cover; background-position: center; position: relative;">
   <div style="position:absolute;inset:0;background:rgba(8,16,2,0.90);pointer-events:none;"></div>
     <div class="max-w-3xl mx-auto relative z-10">
 
@@ -633,7 +633,7 @@
         <p class="text-cream-dim text-sm leading-relaxed mb-7 max-w-lg mx-auto">
           If something here moved you — or you want to share a story about how you were helped
           in an incredible way because of this technology — or if you have questions or concerns —
-          feel free to write about anything AI.
+          feel free to write me about anything AI.
         </p>
         <a href="mailto:mloo@utk.edu?subject=Starting%20a%20Conversation"
            class="cta-btn inline-block rounded-full px-9 py-3.5 text-sm tracking-wide shadow-xl mb-8">
