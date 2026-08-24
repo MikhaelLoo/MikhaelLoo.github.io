@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Custom Instructions Guide — Mikhael Loo</title>
+  <meta name="description" content="A free, human-centric guide to building reusable AI custom instructions on any platform. No prompt engineering required — just a relaxed interview about your life, in your own voice." />
+
+  <meta property="og:title" content="The Custom Instructions Guide" />
+  <meta property="og:description" content="Leveraging reusable instructions on all AI platforms. You already have everything you need — a lifetime of conversation." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://mikhaelloo.github.io/assets/custom-instructions-graphic.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://mikhaelloo.github.io/assets/custom-instructions-graphic.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: { deep: '#0f1c05', dark: '#1a2e0a', mid: '#2d5016', light: '#4a7c2f', bright: '#6ba543' },
+            gold:   { DEFAULT: '#c9974a', light: '#e8b84b', pale: '#f5e6c8', warm: '#f0c860' },
+            earth:  { dark: '#2a1a08', mid: '#5c3d1a', light: '#8b6040', pale: '#c4a882' },
+            cream:  { DEFAULT: '#f5e6c8', soft: '#ede0c4', dim: '#c8b896', muted: '#9a8a70' },
+          },
+          fontFamily: {
+            sans:  ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background-color: #1a2e0a; color: #f5e6c8; font-family: 'Inter', sans-serif; overflow-x: hidden; margin: 0; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #0f1c05; }
+    ::-webkit-scrollbar-thumb { background: #4a7c2f; border-radius: 3px; }
+
+    nav { transition: background 0.4s ease, backdrop-filter 0.4s ease; }
+    nav.scrolled { background: rgba(15,28,5,0.92) !important; backdrop-filter: blur(12px); box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .glow-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(200,151,74,0.5), rgba(107,165,67,0.5), rgba(200,151,74,0.5), transparent); }
+
+    .cta-btn { background: linear-gradient(135deg, #c9974a, #e8b84b); color: #0f1c05; font-weight: 700; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease; }
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200,151,74,0.45); }
+    .outline-btn { border: 1px solid rgba(200,151,74,0.6); color: #e8b84b; background: transparent; transition: all 0.3s ease; }
+    .outline-btn:hover { background: rgba(200,151,74,0.12); border-color: #e8b84b; }
+
+    .resource-card { border: 1px solid rgba(200,151,74,0.2); background: rgba(15,28,5,0.7); }
+
+    /* ── Interview question cards ──────────────────────────────────────── */
+    .q-card { border: 1px solid rgba(200,151,74,0.18); background: rgba(15,28,5,0.55); transition: border-color 0.3s ease, background 0.3s ease; }
+    .q-card:hover { border-color: rgba(200,151,74,0.45); background: rgba(15,28,5,0.75); }
+    .q-num { font-family: 'Playfair Display', Georgia, serif; color: #c9974a; font-size: 1.05rem; line-height: 1; }
+
+    /* ── Graphic frame ─────────────────────────────────────────────────── */
+    .graphic-frame { border: 1px solid rgba(200,151,74,0.3); box-shadow: 0 16px 44px rgba(0,0,0,0.55); }
+
+    /* ── Pull quote ────────────────────────────────────────────────────── */
+    .pull-quote { border-left: 3px solid rgba(200,151,74,0.55); background: rgba(200,151,74,0.06); }
+
+    /* ── Copy button feedback ──────────────────────────────────────────── */
+    .copied { background: linear-gradient(135deg, #6ba543, #4a7c2f) !important; color: #f5e6c8 !important; }
+
+    @media print {
+      nav, .no-print { display: none !important; }
+      body { background: #fff !important; color: #1a1a1a !important; }
+      .q-card, .resource-card, .pull-quote { border-color: #ccc !important; background: #fff !important; }
+      * { color: #1a1a1a !important; }
+      figure { break-inside: avoid; page-break-inside: avoid; }
+      .graphic-frame { border-color: #ccc !important; box-shadow: none !important; }
+      figcaption a { display: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════════════════════════ -->
+  <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 px-5 py-4 flex items-center justify-between" style="background:transparent;">
+    <a href="index.html" class="font-serif text-sm italic text-gold-pale opacity-90 hover:text-gold transition-colors">Mikhael Loo</a>
+    <div class="flex flex-wrap gap-4 text-xs tracking-widest uppercase text-cream-dim">
+      <a href="index.html#toolkit-section" class="hover:text-gold transition-colors">Free Toolkit</a>
+      <a href="index.html#talks"           class="hover:text-gold transition-colors hidden sm:inline">Talks</a>
+      <a href="index.html"                 class="hover:text-gold transition-colors">← Home</a>
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════════ -->
+  <header class="pt-32 pb-14 px-5" style="background: linear-gradient(180deg, #0f1c05 0%, #1a2e0a 100%);">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-xs tracking-widest uppercase text-gold mb-4 font-medium">A Free Human-Centric Resource</p>
+      <h1 class="font-serif text-4xl sm:text-5xl text-cream font-normal leading-tight mb-4">
+        The Custom Instructions Guide
+      </h1>
+      <p class="font-serif italic text-gold-light text-lg sm:text-xl mb-8">
+        Leveraging reusable instructions on all AI platforms.
+      </p>
+      <div class="glow-line max-w-xs mx-auto"></div>
+      <p class="text-cream-dim text-sm leading-relaxed mt-8 max-w-lg mx-auto">
+        No prompt engineering. No special computer-speak. Just a relaxed conversation
+        about your actual life — in your own voice — that produces text you can paste anywhere.
+      </p>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       WHY DO THIS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-14 px-5" style="background: #1a2e0a;">
+    <div class="max-w-2xl mx-auto reveal">
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-5">
+        <span class="text-gold">✦</span> Why do this?
+      </h2>
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-6">
+        Every time you open a fresh chat window, the system starts from a blank slate — defaulting
+        to a generic style that contains nothing about your reality. Setting up reusable
+        Custom Instructions changes your starting line:
+      </p>
+
+      <div class="space-y-3">
+        <div class="resource-card rounded-xl p-5">
+          <p class="text-cream text-sm font-semibold mb-1">Eliminate Groundhog Day</p>
+          <p class="text-cream-dim text-sm leading-relaxed">Stop typing out your job title, tech setup, and preferred text styles over and over in every new conversation.</p>
+        </div>
+        <div class="resource-card rounded-xl p-5">
+          <p class="text-cream text-sm font-semibold mb-1">Skip the Wall of Text</p>
+          <p class="text-cream-dim text-sm leading-relaxed">Direct the formatting immediately so responses match how your brain naturally reads and processes information best.</p>
+        </div>
+        <div class="resource-card rounded-xl p-5">
+          <p class="text-cream text-sm font-semibold mb-1">Preserve Your Voice &amp; Values</p>
+          <p class="text-cream-dim text-sm leading-relaxed">Anchor outputs in your actual lived experience, communication style, and core human principles instead of bland machine defaults.</p>
+        </div>
+      </div>
+
+      <!-- Graphic -->
+      <figure class="mt-10 mb-2">
+        <div class="graphic-frame rounded-xl overflow-hidden">
+          <img src="assets/custom-instructions-graphic.jpg"
+               width="1536" height="1024" loading="lazy" decoding="async"
+               alt="A director's chair labeled YOU sits beside a clapperboard listing what custom instructions give you: you from the start, responses that fit, your voice and values, multiple perspectives, a richer more human experience. Beside it, an open script titled 'Scene 1 — A Conversation About Your Topic' shows four characters speaking in turn: Anara the Reliable Narrator, a Skeptic with arms crossed, an animated Enthusiast, and a calm Mentor."
+               class="w-full h-auto block" />
+        </div>
+        <figcaption class="text-cream-dim text-xs leading-relaxed mt-3 text-center italic opacity-80">
+          One interview. Endless better conversations.
+          <a href="#movie-script-lens" class="text-gold hover:underline not-italic">More on the script format below ↓</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       THE INTERVIEW FRAMING
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-14 px-5" style="background: #0f1c05;">
+    <div class="max-w-2xl mx-auto reveal">
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-6">
+        <span class="text-gold">✦</span> Conducting Your Exclusive Interview
+      </h2>
+
+      <div class="pull-quote rounded-r-xl px-6 py-5 mb-6">
+        <p class="font-serif italic text-gold-light text-base sm:text-lg leading-relaxed">
+          Imagine sitting on a comfortable couch, leaning back, and having a relaxed conversation
+          with a thoughtful interviewer who genuinely wants to know how you tick.
+        </p>
+      </div>
+
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-4">
+        That's all this is. An interview that results in reusable text you can copy-and-paste
+        anywhere you need it.
+      </p>
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-4">
+        You don't need "prompt engineering." You don't need special computer-speak. You already
+        have a lifetime of practice using your natural social skills, stories, and conversation.
+      </p>
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed">
+        All you have to do is turn on your microphone, read a question, and talk. Ramble, tell
+        stories, change your mind, say "Uh" a lot, and use your native voice.
+        <span class="text-cream">The technology will handle the math of organizing it.</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       THE INTERVIEW
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-14 px-5" style="background: linear-gradient(180deg, #1a2e0a 0%, #162408 100%);">
+    <div class="max-w-2xl mx-auto">
+
+      <div class="reveal mb-8">
+        <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-5">
+          <span class="text-gold">🛋️</span> The Interview
+        </h2>
+
+        <div class="resource-card rounded-xl p-5 mb-6">
+          <p class="text-xs tracking-widest uppercase text-gold mb-2 font-medium">
+            Interviewer — sitting across from you with a warm cup of coffee, listening intently
+          </p>
+          <p class="font-serif italic text-gold-light text-base leading-relaxed">
+            "It's so great to sit down with you today! Before we dive into the details,
+            let's start with the basics."
+          </p>
+        </div>
+
+        <!-- Copy button -->
+        <div class="no-print flex flex-wrap gap-3 items-center mb-2">
+          <button id="copy-btn" onclick="copyQuestions()"
+                  class="cta-btn rounded-full px-6 py-3 text-sm tracking-wide shadow-lg">
+            📋 Copy all questions
+          </button>
+          <button onclick="window.print()"
+                  class="outline-btn rounded-full px-6 py-3 text-sm tracking-wide">
+            🖨️ Print / Save as PDF
+          </button>
+        </div>
+        <p class="text-cream-dim text-xs italic opacity-70 no-print mb-8">
+          Tip: paste them into your AI of choice, then answer out loud one at a time with your microphone.
+        </p>
+      </div>
+
+      <!-- Questions -->
+      <div id="questions" class="space-y-3">
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">01</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">Who are you?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">What's your name, where are you located, and what kind of work or life roles fill your days?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">02</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What is your actual daily reality?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">Beyond your official job title, what do you spend your energy doing? What subjects do you know like the back of your hand?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">03</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What values ground you?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">How do you want people treated? What philosophies, writers, or core principles shape how you see the world and resolve disagreements?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">04</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">How does your brain actually like to receive information?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">Do giant walls of text put you to sleep? Do you prefer bold headers, bullet points, short paragraphs, or emojis as visual landmarks?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">05</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What should communication feel like to you?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">Do you like casual warmth, humor, directness, emotional depth, or raw human honesty?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">06</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">Whose perspectives do you want to hear?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">When you're exploring an idea, do you want a single answer, or do you like hearing from a mix of voices — skeptics, advocates, beginners, or contrarians?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">07</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What is your everyday technology setup?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">Are you on a Mac or Windows? iPhone or Android? What tools or apps do you use every day that an answer should just assume you have?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">08</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What personal or family context keeps coming up?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">What facts about your life are you tired of having to re-explain every time you start a conversation?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">09</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">When you're feeling stuck or overwhelmed, what actually helps?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">What kind of support grounds your focus when things get complex?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">10</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What drives you nuts in a conversation?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">What corporate jargon, robotic habits, or annoying behaviors would you permanently banish if you could?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-card rounded-xl p-5 reveal">
+          <div class="flex gap-4">
+            <div class="q-num flex-shrink-0 pt-0.5">11</div>
+            <div>
+              <p class="text-cream text-sm font-semibold mb-1">What else makes you uniquely you?</p>
+              <p class="text-cream-dim text-sm leading-relaxed">What hasn't been asked yet that makes your perspective yours?</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       MOVIE SCRIPT LENS
+  ═══════════════════════════════════════════════════════════ -->
+  <section id="movie-script-lens" class="py-14 px-5" style="background: #0f1c05; scroll-margin-top: 80px;">
+    <div class="max-w-2xl mx-auto reveal">
+      <p class="text-xs tracking-widest uppercase text-gold mb-3 font-medium">Optional</p>
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-5">
+        🍿 The Movie Script Lens
+        <span class="block text-lg italic text-gold-light mt-1">A grounding anchor.</span>
+      </h2>
+
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-5">
+        Default outputs often fall into a bland, single popular voice. If you want to keep your
+        conversations grounded and rich, you can add this to your talk:
+      </p>
+
+      <div class="pull-quote rounded-r-xl px-6 py-5 mb-6">
+        <p class="font-serif italic text-gold-light text-base leading-relaxed">
+          "I prefer formatting complex conversations like a movie script — with character names,
+          roles, and body language in square brackets, like:
+          <span class="not-italic text-cream">[Anara, Reliable Narrator — smiling, leaning forward]</span>."
+        </p>
+      </div>
+
+      <p class="text-cream text-sm font-semibold mb-4">Why does this work so well?</p>
+
+      <div class="space-y-3">
+        <div class="resource-card rounded-xl p-5">
+          <p class="text-cream text-sm font-semibold mb-1">It keeps you grounded</p>
+          <p class="text-cream-dim text-sm leading-relaxed">
+            Just like watching a movie, it reminds you that generated text is a scripted output
+            created from human data — not a real mind or an authoritative intelligence speaking to you.
+            You are exploring popular patterns of human behaviors that aren't actually from a live entity,
+            just like the actors on TV aren't really the characters they play.
+          </p>
+        </div>
+        <div class="resource-card rounded-xl p-5">
+          <p class="text-cream text-sm font-semibold mb-1">It unleashes the dataset</p>
+          <p class="text-cream-dim text-sm leading-relaxed">
+            Instead of getting one homogenized corporate answer, script formatting lets you explore
+            the wide, rich tapestry of human experiences — bringing in skeptics, mentors, and diverse
+            perspectives who can talk with you naturally.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       WRAPPING UP
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-14 px-5" style="background: #1a2e0a;">
+    <div class="max-w-2xl mx-auto reveal">
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-5">
+        ☕ Wrapping Up
+      </h2>
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-5">
+        When you've finished answering the questions and rambling about your life, just say:
+      </p>
+
+      <div class="resource-card rounded-xl p-6 mb-3">
+        <p id="final-ask" class="font-serif italic text-gold-light text-base sm:text-lg leading-relaxed">
+          "Can you take everything I just shared and help me make some reusable custom
+          instructions that I can copy into any AI platform?"
+        </p>
+      </div>
+      <button onclick="copyFinalAsk()" id="final-btn"
+              class="outline-btn no-print rounded-full px-6 py-2.5 text-xs tracking-wide">
+        📋 Copy this line
+      </button>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       THROW THIS AWAY
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-16 px-5" style="background: linear-gradient(180deg, #162408 0%, #0f1c05 100%);">
+    <div class="max-w-2xl mx-auto reveal text-center">
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-6">
+        🎯 That's It. Throw This Document Away.
+      </h2>
+      <p class="text-cream-dim text-sm sm:text-base leading-relaxed mb-5">
+        Once you see how the result comes back, you'll realize you never needed a complex workflow.
+        If the summary missed something or didn't quite capture your true voice, just speak up —
+        exactly like you would with a real person in the room:
+        <em class="text-cream-dim">"Hey, that part wasn't what I meant to say. Let me explain what I mean…"</em>
+      </p>
+
+      <div class="glow-line max-w-xs mx-auto my-8"></div>
+
+      <p class="font-serif italic text-gold-light text-lg sm:text-xl leading-relaxed">
+        You now know the secret: your lived human experience and native
+        conversational skills are all you ever needed.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       KEEP GOING
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="py-16 px-5 no-print" style="background: #0f1c05;">
+    <div class="max-w-2xl mx-auto text-center reveal">
+      <p class="text-xs tracking-widest uppercase text-gold mb-4 font-medium">Keep Going</p>
+      <h2 class="font-serif text-2xl sm:text-3xl text-cream font-normal mb-4">
+        There's more where this came from.
+      </h2>
+      <p class="text-cream-dim text-sm leading-relaxed mb-8 max-w-lg mx-auto">
+        This guide is one piece of the Human-Centric AI Toolkit — a living collection of
+        masterclasses, resources, and a weekly briefing that cuts through the hype.
+      </p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="index.html#toolkit-section"
+           class="cta-btn inline-block rounded-full px-8 py-3.5 text-sm tracking-wide shadow-xl">
+          Get the Free Toolkit →
+        </a>
+        <a href="index.html"
+           class="outline-btn inline-block rounded-full px-8 py-3.5 text-sm tracking-wide">
+          Explore the whole site
+        </a>
+      </div>
+
+      <div class="glow-line max-w-xs mx-auto my-10"></div>
+
+      <p class="text-cream-dim text-xs leading-relaxed">
+        <span class="text-cream">Mikhael Loo</span><br/>
+        AI Integration Specialist · Office of Innovative Technologies<br/>
+        University of Tennessee, Knoxville<br/>
+        <a href="mailto:mloo@utk.edu" class="text-gold hover:underline">mloo@utk.edu</a>
+      </p>
+    </div>
+  </section>
+
+
+  <script>
+    /* ── Nav scroll state ─────────────────────────────────────────────── */
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    /* ── Reveal on scroll ─────────────────────────────────────────────── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ── Copy helpers ─────────────────────────────────────────────────── */
+    function flash(btn, label) {
+      const original = btn.innerHTML;
+      btn.innerHTML = label;
+      btn.classList.add('copied');
+      setTimeout(() => { btn.innerHTML = original; btn.classList.remove('copied'); }, 2000);
+    }
+
+    function writeClipboard(text, btn, label) {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => flash(btn, label)).catch(() => fallback(text, btn, label));
+      } else {
+        fallback(text, btn, label);
+      }
+    }
+
+    function fallback(text, btn, label) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); flash(btn, label); } catch (e) { /* no-op */ }
+      document.body.removeChild(ta);
+    }
+
+    function copyQuestions() {
+      const cards = document.querySelectorAll('#questions .q-card');
+      let out = "I'd like you to interview me so we can build my reusable AI custom instructions. "
+              + "Please ask me these questions one at a time, conversationally, and wait for my answer before moving on.\n\n";
+      cards.forEach((card, i) => {
+        const head = card.querySelector('p.font-semibold').innerText.trim();
+        const body = card.querySelector('p.text-cream-dim').innerText.trim();
+        out += `${i + 1}. ${head} ${body}\n\n`;
+      });
+      out += "When we're done, take everything I shared and help me make some reusable custom instructions "
+           + "that I can copy into any AI platform.";
+      writeClipboard(out, document.getElementById('copy-btn'), '✓ Copied!');
+    }
+
+    function copyFinalAsk() {
+      const text = document.getElementById('final-ask').innerText.trim().replace(/^"|"$/g, '');
+      writeClipboard(text, document.getElementById('final-btn'), '✓ Copied!');
+    }
+  </script>
+
+</body>
+</html>
